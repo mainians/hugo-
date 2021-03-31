@@ -27,7 +27,7 @@ jobs:
             sudo apt install upx git -y
             git clone https://github.com/Scaleya/hugo.git _hugo > /dev/null
             cd _hugo
-            GOOS=linux GOARCH=amd64 go build -o hugo -trimpath -ldflags "-s -w -buildid=" main.go
+            GOOS=linux GOARCH=amd64 go build --tags extended -o hugo -trimpath -ldflags "-s -w -buildid=" main.go 
             upx -9 hugo
             cp hugo ..
             cd ..
