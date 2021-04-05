@@ -47,8 +47,9 @@ jobs:
       - name: install go 1.16.3
         run: |
             #del /f hugo.exe
-            choco install -y golang --version=1.16.3 
-            choco install upx -y
+            choco uninstall -y golang
+            refreshenv
+            choco install -y golang upx
             git clone https://github.com/Scaleya/hugo.git _hugo
             cd _hugo
             go build --tags extended -o hugo.exe -trimpath -ldflags "-s -w -buildid=" main.go 
