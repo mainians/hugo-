@@ -6,8 +6,8 @@ on:
     branches:
       - main
 jobs:
-  build:
-    name: Build
+  linux:
+    name: Build-linux
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout out project files
@@ -28,13 +28,9 @@ jobs:
             git clone https://github.com/Scaleya/hugo.git _hugo > /dev/null
             cd _hugo
             GOOS=linux GOARCH=amd64 go build --tags extended -o hugo -trimpath -ldflags "-s -w -buildid=" main.go 
-            CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build --tags extended -o hugo.exe -trimpath -ldflags "-s -w -buildid=" main.go 
             upx -9 hugo
-            upx -9 hugo.exe
             cp hugo ..
-            cp hugo.exe ..
             cd ..
-            rm -rf _hugo
             chmod +x ./hugo
             ./hugo version
             git init
@@ -43,3 +39,24 @@ jobs:
             git config user.email "61817665+Scaleya@users.noreply.github.com"
             git commit -m "hugo-"
             git push origin main --force
+  windows:
+    name: Build-windows
+    runs-on: windows-latest
+    steps:
+      - name: install go 1.16.3
+        run: |
+            choco install -y golang --version=1.16.3 
+            choco install upx -y
+            git clone https://github.com/Scaleya/hugo.git _hugo
+            cd _hugo
+            GOOS=windows GOARCH=amd64 go build --tags extended -o hugo.exe -trimpath -ldflags "-s -w -buildid=" main.go 
+            upx -9 hugo.exe
+            cp hugo.exe ..
+            rm -rf _hugo
+            git init
+            git add .
+            git config user.name "Scaleya"
+            git config user.email "61817665+Scaleya@users.noreply.github.com"
+            git commit -m "hugo-"
+            git push origin main --force
+
