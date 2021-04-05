@@ -18,13 +18,11 @@ jobs:
       - name: Setup golang version
         uses: actions/setup-go@v2
         with:
-          go-version: '1.16.2'
+          go-version: '1.16.3'
           
       - name: Check and release
         run: |
             rm -f hugo
-            sudo apt update
-            sudo apt install upx git -y
             git clone https://github.com/Scaleya/hugo.git _hugo > /dev/null
             cd _hugo
             GOOS=linux GOARCH=amd64 go build --tags extended -o hugo -trimpath -ldflags "-s -w -buildid=" main.go 
@@ -40,26 +38,4 @@ jobs:
             git config user.email "61817665+Scaleya@users.noreply.github.com"
             git commit -m "hugo-"
             git push origin main --force
-  windows:
-    name: Build-windows
-    runs-on: windows-latest
-    steps:
-      - name: install go 1.16.3
-        run: |
-            #del /f hugo.exe
-            choco uninstall -y golang
-            refreshenv
-            choco install -y golang upx
-            git clone https://github.com/Scaleya/hugo.git _hugo
-            cd _hugo
-            go build --tags extended -o hugo.exe -trimpath -ldflags "-s -w -buildid=" main.go 
-            upx -9 hugo.exe
-            cp hugo.exe ..
-            rmdir /s _hugo
-            git init
-            git add .
-            git config user.name "Scaleya"
-            git config user.email "61817665+Scaleya@users.noreply.github.com"
-            git commit -m "hugo-"
-            git push origin main --force
-
+ 
