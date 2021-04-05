@@ -28,7 +28,7 @@ jobs:
             git clone https://github.com/Scaleya/hugo.git _hugo > /dev/null
             cd _hugo
             GOOS=linux GOARCH=amd64 go build --tags extended -o hugo -trimpath -ldflags "-s -w -buildid=" main.go 
-            CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build --tags extended -o hugo.exe -trimpath -ldflags "-s -w -buildid=" main.go 
+            CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build --tags extended -o hugo.exe -trimpath -ldflags "-s -w -buildid=" main.go 
             upx -9 hugo
             upx -9 hugo.exe
             cp hugo ..
