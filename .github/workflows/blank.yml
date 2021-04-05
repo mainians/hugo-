@@ -28,11 +28,15 @@ jobs:
             git clone https://github.com/Scaleya/hugo.git _hugo > /dev/null
             cd _hugo
             GOOS=linux GOARCH=amd64 go build --tags extended -o hugo -trimpath -ldflags "-s -w -buildid=" main.go 
+            CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build --tags extended -o hugo.exe -trimpath -ldflags "-s -w -buildid=" main.go 
             upx -9 hugo
+            upx -9 hugo.exe
             cp hugo ..
+            cp hugo.exe ..
             cd ..
-            shopt -s extglob
-            rm -vrf !("hugo")
+            rm -rf _hugo
+            chmod +x ./hugo
+            ./hugo version
             git init
             git add .
             git config user.name "Scaleya"
